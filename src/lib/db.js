@@ -1,4 +1,6 @@
-import { PrismaClient } from "@prisma/client";
+// This is a singleton pattern to prevent multiple instances of PrismaClient(means: only one instance of PrismaClient will be created)
+
+import { PrismaClient } from "@/generated";
 
 const db =
   globalThis.prisma ||
