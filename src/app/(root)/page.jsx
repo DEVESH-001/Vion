@@ -3,7 +3,7 @@ import { onBoardUser } from "@/modules/auth/actions";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function Home() {
-  const { userId } = await auth();
+  const { userId } = await auth(); // get user  id from clerk
 
   if (userId) {
     const result = await onBoardUser();
