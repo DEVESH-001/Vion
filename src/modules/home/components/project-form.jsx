@@ -10,6 +10,8 @@ import { cn } from "@/lib/utils";
 import { Form, FormField } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { UpArrow } from "../icons/up-arrow";
+import { triggerAiAgent } from "@/modules/actions";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   content: z
@@ -80,20 +82,40 @@ export default function ProjectForm() {
     },
   });
 
-  // TODO: Implement handleTemplate
   const handleTemplate = (prompt) => {
     form.setValue("content", prompt);
   };
 
-  // TODO: Implement onSubmit
   const onSubmit = async (values) => {
     try {
       console.log(values);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onInitiateProject = async () => {
+    const content = form.getValues("content");
+
+    if (!content || content.trim().length === 0) {
+      toast.error("Please enter a project description");
+      return;
+    }
+
+    try {
+      const res = await triggerAiAgent(content);
+      console.log(res);
+      toast.success("Project generation started successfully");
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to generate project");
+    }
   };
 
   return (
     <div className="space-y-8">
+      {/* Template Grid */}
+      <Button onClick={onInitiateProject}>Generate Project</Button>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {PROJECT_TEMPLATES.map((template, index) => (
           <button
@@ -165,7 +187,7 @@ export default function ProjectForm() {
                 &#8984; + &#8629; to submit
               </kbd>
             </div>
-            <Button>
+            <Button onClick={onInitiateProject}>
               <UpArrow />
             </Button>
           </div>
