@@ -11,3 +11,13 @@ user sign-in -> Home(authenticated) -> OnBoarding (if not onboarded) -> Dashboar
 - Redirect to dashboard
 
 
+## Sandbox Workflow
+
+- User creates a new project
+- User selects a template
+- User submits the project
+- Backend creates a sandbox using E2B
+- Backend returns the sandbox ID to the frontend
+- Frontend displays the sandbox
+
+`also in sandbox-template we can add more templates like expo,react. If user selects expo then backend will create a sandbox using expo template`

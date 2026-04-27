@@ -1,0 +1,17 @@
+# This is a config for E2B sandbox template.
+# You can use template ID (1jac13e04oh68nc8atga) or template name (vion-ai) to create a sandbox:
+
+# Python SDK
+# from e2b import Sandbox, AsyncSandbox
+# sandbox = Sandbox.create("vion-ai") # Sync sandbox
+# sandbox = await AsyncSandbox.create("vion-ai") # Async sandbox
+
+# JS SDK
+# import { Sandbox } from 'e2b'
+# const sandbox = await Sandbox.create('vion-ai')
+
+team_id = "8723ef28-d65e-451c-88ec-b0c848efd976"
+start_cmd = "/compile_page.sh"
+dockerfile = "e2b.Dockerfile"
+template_name = "vion-ai"
+template_id = "1jac13e04oh68nc8atga"
