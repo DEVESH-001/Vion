@@ -1,15 +1,25 @@
 import { inngest } from "@/inngest/client";
+import { createAgent, gemini } from "@inngest/agent-kit";
 
-
-export const helloworld = inngest.createFunction(
-  { id: "helloworld", triggers: { event: "app/helloworld.created" } },
-  async ({ event, step }) => {
-    const result = await step.run("handle-task", async () => {
-      return { processed: true, id: event.data.id };
+export const aiAgent = inngest.createFunction(
+  { id: "ai-agent", triggers: { event: "vion/ai-agent.created" } },
+  async ({ event }) => {
+    const agent = createAgent({
+      name: "ai-agent",
+      description:
+        "A simple AI agent that can answer questions and help with tasks",
+      system: "You are a helpful AI assistant.",
+      model: gemini({
+        model: "gemini-2.5-flash",
+        apiKey: process.env.GEMINI_API_KEY,
+      }),
     });
 
-    await step.sleep("pause", "1s");
+    // agent.run() internally uses step.ai.infer — call it directly at the
+    // top level, never inside step.run(), to avoid nested step errors.
+    const output = await agent.run(event.data.prompt);
+    const lastMessage = output.output?.at(-1);
 
-    return { message: `Hello ${event.data.id} World`, result };
-  }
+    return { response: lastMessage?.content ?? "" };
+  },
 );
